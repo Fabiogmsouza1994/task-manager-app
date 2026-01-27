@@ -1,0 +1,286 @@
+<div class="m-5">
+  <div class="d-flex flex-column gap-5">
+    <div class="presentation-container shadow rounded-4">
+      <h1 class="p-4 text-white fs-4">{{ 'Task Manager Pro' }}</h1>
+      <p class="px-4 pb-4 text-white">Personal project to present to Avanade recruiters.</p>
+    </div>
+
+    <div class="d-flex flex-row gap-3">
+      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+          <div class="text-secondary fs-6 p-3">TOTAL TASKS</div>
+          <div class="fs-2 p-3 fw-bold">{{ tasks.length }}</div>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+          <div class="text-secondary fs-6 p-3">Completed Tasks</div>
+          <div class="fs-2 p-3 fw-bold">{{ getCompletedTasksCount() }}</div>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+          <div class="text-secondary fs-6 p-3">Completed Tasks</div>
+          <div class="fs-2 p-3 fw-bold">{{ getPendingTasksCount() }}</div>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+          <div class="text-secondary fs-6 p-3">Overdue Tasks</div>
+          <div class="fs-2 p-3 fw-bold">{{ getOverdueTasksCount() }}</div>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+          <div class="text-secondary fs-6 p-3">Completion Rate</div>
+          <div class="fs-2 p-3 fw-bold" [style.color]="completionColor">
+            {{ getCompletionRate() }}%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-4 border border-light-subtle mt-5 d-flex flex-row gap-3 p-3">
+    <span class="col-md-2">
+      <mat-select
+        class="filter-dropdown"
+        panelClass="my-custom-panel-class"
+        [(ngModel)]="filterStatus"
+      >
+        <mat-option value="all">All status</mat-option>
+        @for (status of statuses; track status) {
+          <mat-option [value]="status">{{ status }}</mat-option>
+        }
+      </mat-select>
+    </span>
+    <span class="col-md-2">
+      <mat-select
+        class="col-md-3 filter-dropdown"
+        panelClass="my-custom-panel-class"
+        [(ngModel)]="filterCategory"
+      >
+        <mat-option value="all">All Categories</mat-option>
+        @for (category of categories; track category) {
+          <mat-option [value]="category">{{ category }}</mat-option>
+        }
+      </mat-select>
+    </span>
+
+    <span class="col-md-2">
+      <mat-select
+        class="col-md-3 filter-dropdown"
+        panelClass="my-custom-panel-class"
+        [(ngModel)]="filterPriority"
+      >
+        <mat-option value="all">All Priorities</mat-option>
+        @for (priority of priorities; track priority) {
+          <mat-option [value]="priority">{{ priority }}</mat-option>
+        }
+      </mat-select>
+    </span>
+
+    <span class="col-md-3 d-flex align-items-center gap-1 text-wrap">
+      <input type="checkbox" [(ngModel)]="showCompleted" id="showCompletedTasks" />
+      Show Completed Tasks
+    </span>
+  </div>
+
+  @switch (getProductivityLevel()) {
+    @case ('excelent') {
+      <div class="mt-5 alert alert-success">
+        [SUCCESS] Outstanding productivity! Keep up the good work!
+      </div>
+    }
+
+    @case ('good') {
+      <div class="mt-5 alert alert-success">
+        [GOOD] Good job! You're mantaining steady progress.
+      </div>
+    }
+
+    @case ('needs-inprovement') {
+      <div class="mt-5 alert alert-warning">
+        [WARNING] Your produvtivity could use a boost. Focus on completing tasks!
+      </div>
+    }
+
+    @case ('poor') {
+      <div class="mt-5 alert alert-danger">
+        [ALERT] Time to get back on track! Start with small, easy tasks.
+      </div>
+    }
+
+    @case ('default') {
+      <div class="mt-5 alert alert-info">Keep tracking your tasks!</div>
+    }
+  }
+
+  <div class="bg-white shadow rounded-4 border border-light-subtle mt-5 p-3">
+    <div class="add-task-header">
+      <h2>Add new task</h2>
+    </div>
+    <div class="row">
+      <div class="form-group col-12 col-md-3">
+        <label>Title *</label>
+        <input
+          type="text"
+          [(ngModel)]="newTask.title"
+          placeholder="Enter task title"
+          name="task-title"
+          required
+          (focus)="onFocus('title')"
+          (blur)="onBlur('title')"
+        />
+      </div>
+
+      <div class="form-group col-12 col-md-3">
+        <label>Category *</label>
+        <mat-select
+          class="col-md-3 filter-dropdown"
+          panelClass="my-custom-panel-class"
+          [(ngModel)]="newTask.category"
+          required
+        >
+          <mat-option value="" disabled>Select category</mat-option>
+          @for (category of categories; track categories) {
+            <mat-option [value]="category">{{ category }}</mat-option>
+          }
+        </mat-select>
+      </div>
+
+      <div class="form-group col-12 col-md-3">
+        <label>Priority</label>
+        <select [(ngModel)]="newTask.priority">
+          @for (priority of priorities; track priority) {
+            <option [value]="priority">{{ priority }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group col-12 col-md-3">
+        <label>Due Date *</label>
+        <input type="date" [(ngModel)]="newTask.dueDate" required />
+      </div>
+
+      <div class="form-group col-12 col-md-3">
+        <label>Status</label>
+        <mat-select
+          [(ngModel)]="newTask.status"
+          class="filter-dropdown"
+          panelClass="my-custom-panel-class"
+        >
+          @for (status of statuses; track status) {
+            <mat-option [value]="status">{{ status }}</mat-option>
+          }
+        </mat-select>
+      </div>
+
+      <div class="form-group" style="grid-column: 1 / -1">
+        <label>Description</label>
+        <textarea
+          [(ngModel)]="newTask.description"
+          placeholder="Enter task description (optional)"
+        ></textarea>
+      </div>
+
+      <div class="form-actions mt-3">
+        <button
+          class="btn btn-primary"
+          (click)="addTask()"
+          [disabled]="!newTask.title || !newTask.category || !newTask.dueDate"
+        >
+          {{
+            !newTask.title || !newTask.category || !newTask.dueDate
+              ? 'Please fill in the required fields'
+              : 'Add new task'
+          }}
+        </button>
+
+        <button class="btn btn-secondary" (click)="clearForm()">Clear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tasks-section">
+  <div class="section-header">
+    <h2>Tasks</h2>
+    <span>Showing {{ getFilteredTasks().length }}</span>
+  </div>
+  @if (getFilteredTasks().length > 0) {
+    <div class="tasks-list">
+      @for (task of getFilteredTasks(); track task.id; let idx = $index) {
+        <div
+          class="p-3 rounded-3 gap-3"
+          [ngClass]="{
+            'bg-warning-subtle': task.priority === 'medium',
+            'bg-success-subtle': task.priority === 'low',
+            'bg-danger-subtle': task.priority === 'high',
+          }"
+          [class.task-completed]="task.status === 'completed'"
+        >
+          <div class="row align-items-start">
+            <div class="col d-flex">
+              <div class="col-auto">
+                <input
+                  type="checkbox"
+                  [checked]="task.status === 'completed'"
+                  (change)="toggleTaskComplete(task.id)"
+                />
+              </div>
+
+              <div class="flex-grow-1 ms-2">
+                <div class="d-flex gap-2 align-items-center">
+                  <span class="badge rounded-pill bg-dark">{{ idx + 1 }}</span>
+                  <span class="fw-bold">{{ task.title }}</span>
+                </div>
+
+                <p *ngIf="task.description">{{ task.description }}</p>
+
+                <div class="task-meta d-flex gap-2 flex-wrap">
+                  <span [class]="'category-tag category-' + task.category">
+                    {{ task.category }}
+                  </span>
+                  <span [class]="'status-badge status-' + task.status">
+                    {{ task.status }}
+                  </span>
+                  <span [style.color]="isOverdue(task) ? '#ef4444' : '#64748b'">
+                    Due: {{ task.dueDate | date }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Delete -->
+            <div class="col-auto d-flex align-items-center">
+              <button class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-state-description"><div class="empty-state-icon">[EMPTY]</div></div>
+
+      <div class="empty-state-title">
+        @if (filterStatus !== 'all' || filterCategory !== 'all' || filterPriority !== 'all') {
+          Try adjusting your filters or add a new task.
+        } @else {
+          No tasks yet.
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<div class="productivity-score">
+  <div class="score-label">Your Productivity Score</div>
+  <div class="score-value">{{ getCompletionRate() }}%</div>
+  <div class="score-label">Keep going!</div>
+</div>
