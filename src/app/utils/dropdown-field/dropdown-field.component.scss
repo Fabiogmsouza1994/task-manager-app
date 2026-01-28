@@ -1,3 +1,14 @@
-:host {
-  display: block;
+.filter-dropdown {
+  padding: 10px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+ 
+.filter-dropdown:focus {
+  outline: none;
+  border-color: #F593C6;
 }

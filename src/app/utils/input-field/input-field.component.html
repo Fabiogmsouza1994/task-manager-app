@@ -1,0 +1,13 @@
+<label
+  >{{ label }}
+  <span class="text-danger px-1" *ngIf="this.formControl?.errors?.['required']">*</span></label
+>
+<input
+  class="input-dropdown"
+  [formControlName]="fieldName"
+  [placeholder]="placeholder"
+  [name]="name"
+  (focus)="onFocus($event)"
+  (blur)="onBlur($event)"
+
+/>

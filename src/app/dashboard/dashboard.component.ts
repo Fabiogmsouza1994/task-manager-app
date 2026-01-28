@@ -2,48 +2,28 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { throwMatDuplicatedDrawerError } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
+import { AlertService } from '../services/alert.service';
+import { DashboardService } from './services/dashboard.service';
+import { FormatingDatePipe } from '../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-task-manager',
-  imports: [CommonModule, FormsModule, MatSelectModule],
-  templateUrl: './task-manager.component.html',
-  styleUrl: './task-manager.component.scss',
+  imports: [CommonModule, FormsModule, MatSelectModule, FormatingDatePipe],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskManager {
-  tasks: Task[] = [
-    {
-      id: 1,
-      title: 'Complete Angular Assigment',
-      description: 'Finish the task manager application with all requirements',
-      category: 'education',
-      priority: 'high',
-      dueDate: new Date('2024-12-15'),
-      status: 'in-progress',
-      createdAt: new Date('2024-12-01'),
-    },
-    {
-      id: 2,
-      title: 'Buy Groceries',
-      description: 'Milk, Bread, Eggs, Vegetables',
-      category: 'shopping',
-      priority: 'medium',
-      dueDate: new Date('2024-12-10'),
-      status: 'in-progress',
-      createdAt: new Date('2024-12-05'),
-    },
-    {
-      id: 3,
-      title: 'Team Meeting',
-      description: 'Discuss Q1 Project Roadmap',
-      category: 'work',
-      priority: 'high',
-      dueDate: new Date('2024-12-08'),
-      status: 'completed',
-      createdAt: new Date('2024-12-08'),
-    },
-  ];
+export class DashboardComponent {
+  constructor(
+    private readonly _service: DashboardService,
+    private readonly _alertService: AlertService,
+    private readonly _route: ActivatedRoute,
+  ) {
+    this.tasks = this._route.snapshot.data['todos'].data;
+  }
+
+  tasks: DashboardInterface[] = [];
 
   categories: string[] = [
     'work',
@@ -62,7 +42,7 @@ export class TaskManager {
     description: string;
     category: string;
     priority: string;
-    dueDate: string | Date;
+    dueDate: string;
     status: string;
   } = {
     title: '',
@@ -76,7 +56,7 @@ export class TaskManager {
   filterStatus: string = 'all';
   filterCategory: string = 'all';
   filterPriority: string = 'all';
-  showCompleted: boolean = true;
+  showCompleted: boolean = false;
 
   get completionColor(): string {
     if (this.getCompletionRate() > 70) return 'green';
@@ -85,17 +65,17 @@ export class TaskManager {
   }
 
   getCompletedTasksCount(): number {
-    return this.tasks.filter((task: Task) => task.status === 'completed').length;
+    return this.tasks.filter((task: DashboardInterface) => task.status === 'completed').length;
   }
 
   getPendingTasksCount(): number {
-    return this.tasks.filter((task: Task) => task.status === 'pending').length;
+    return this.tasks.filter((task: DashboardInterface) => task.status === 'pending').length;
   }
 
   getOverdueTasksCount(): number {
     const today: Date = new Date();
     today.setHours(0, 0, 0, 0);
-    return this.tasks.filter((task: Task) => new Date(task.dueDate) < today).length;
+    return this.tasks.filter((task: DashboardInterface) => new Date(task.dueDate) < today).length;
   }
 
   getCompletionRate(): number {
@@ -120,19 +100,22 @@ export class TaskManager {
       return;
     }
 
-    const task: Task = {
-      id: Date.now(),
+    const task: DashboardInterface = {
       title: this.newTask.title,
       description: this.newTask.description,
       category: this.newTask.category,
       priority: this.newTask.priority,
-      dueDate: new Date(this.newTask.dueDate),
+      dueDate: this.formatDateOnly(new Date(this.newTask.dueDate)),
       status: this.newTask.status,
-      createdAt: new Date(),
     };
 
     this.tasks.push(task);
+    this._service.addData(task).subscribe(() => {});
     this.clearForm();
+  }
+
+  private formatDateOnly(date: Date): string {
+    return date.toISOString().slice(0, 10);
   }
 
   clearForm(): void {
@@ -146,7 +129,7 @@ export class TaskManager {
     };
   }
 
-  getFilteredTasks(): Task[] {
+  getFilteredTasks(): DashboardInterface[] {
     let filtered = [...this.tasks];
 
     if (this.filterStatus !== 'all') {
@@ -161,15 +144,15 @@ export class TaskManager {
       filtered = filtered.filter((task) => task.priority === this.filterPriority);
     }
 
-    if (!this.showCompleted) {
-      filtered = filtered.filter((task) => task.status !== 'completed');
+    if (this.showCompleted) {
+      filtered = filtered.filter((task) => task.status === 'completed');
     }
 
     return filtered;
   }
 
-  toggleTaskComplete(id: number) {
-    const task: Task | undefined = this.tasks.find((t) => t.id === id);
+  toggleTaskComplete(id: number | undefined) {
+    const task: DashboardInterface | undefined = this.tasks.find((t) => t.id === id);
     if (task) {
       if (task.status === 'completed') {
         task.status = 'pending';
@@ -181,16 +164,17 @@ export class TaskManager {
     }
   }
 
-  isOverdue(task: Task): boolean {
+  isOverdue(task: DashboardInterface): boolean {
     const today: Date = new Date();
     today.setHours(0, 0, 0, 0);
     return new Date(task.dueDate) < today && task.status !== 'completed';
   }
 
-  deleteTask(id: number): void {
-    const index: number = this.tasks.findIndex((task) => task.id === id);
-    if (index !== -1) {
-      this.tasks.splice(index, 1);
+  deleteTask(id: number | undefined): void {
+    if (id !== null && id !== undefined) {
+      const index: number = this.tasks.findIndex((task) => task.id === id);
+      if (index !== -1) this.tasks.splice(index, 1);
+      this._service.removeData(id).subscribe(() => {});
     }
   }
 }

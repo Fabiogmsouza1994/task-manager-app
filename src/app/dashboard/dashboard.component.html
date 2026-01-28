@@ -5,37 +5,37 @@
       <p class="px-4 pb-4 text-white">Personal project to present to Avanade recruiters.</p>
     </div>
 
-    <div class="d-flex flex-row gap-3">
-      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
-        <div class="d-flex flex-column align-items-center justify-content-center">
+    <div class="d-flex flex-row flex-nowrap gap-3 overflow-auto pb-3 px-2">
+      <div class="bg-white shadow rounded-4 border border-light-subtle stat-card flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
           <div class="text-secondary fs-6 p-3">TOTAL TASKS</div>
           <div class="fs-2 p-3 fw-bold">{{ tasks.length }}</div>
         </div>
       </div>
 
-      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
-        <div class="d-flex flex-column align-items-center justify-content-center">
+      <div class="bg-white shadow rounded-4 border border-light-subtle stat-card flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
           <div class="text-secondary fs-6 p-3">Completed Tasks</div>
           <div class="fs-2 p-3 fw-bold">{{ getCompletedTasksCount() }}</div>
         </div>
       </div>
 
-      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
-        <div class="d-flex flex-column align-items-center justify-content-center">
-          <div class="text-secondary fs-6 p-3">Completed Tasks</div>
+      <div class="bg-white shadow rounded-4 border border-light-subtle stat-card flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
+          <div class="text-secondary fs-6 p-3">Pending Tasks</div>
           <div class="fs-2 p-3 fw-bold">{{ getPendingTasksCount() }}</div>
         </div>
       </div>
 
-      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
-        <div class="d-flex flex-column align-items-center justify-content-center">
+      <div class="bg-white shadow rounded-4 border border-light-subtle stat-card flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
           <div class="text-secondary fs-6 p-3">Overdue Tasks</div>
           <div class="fs-2 p-3 fw-bold">{{ getOverdueTasksCount() }}</div>
         </div>
       </div>
 
-      <div class="bg-white shadow rounded-4 border border-light-subtle flex-grow-1">
-        <div class="d-flex flex-column align-items-center justify-content-center">
+      <div class="bg-white shadow rounded-4 border border-light-subtle stat-card flex-grow-1">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
           <div class="text-secondary fs-6 p-3">Completion Rate</div>
           <div class="fs-2 p-3 fw-bold" [style.color]="completionColor">
             {{ getCompletionRate() }}%
@@ -45,49 +45,54 @@
     </div>
   </div>
 
-  <div class="bg-white shadow rounded-4 border border-light-subtle mt-5 d-flex flex-row gap-3 p-3">
-    <span class="col-md-2">
-      <mat-select
-        class="filter-dropdown"
-        panelClass="my-custom-panel-class"
-        [(ngModel)]="filterStatus"
-      >
-        <mat-option value="all">All status</mat-option>
-        @for (status of statuses; track status) {
-          <mat-option [value]="status">{{ status }}</mat-option>
-        }
-      </mat-select>
-    </span>
-    <span class="col-md-2">
-      <mat-select
-        class="col-md-3 filter-dropdown"
-        panelClass="my-custom-panel-class"
-        [(ngModel)]="filterCategory"
-      >
-        <mat-option value="all">All Categories</mat-option>
-        @for (category of categories; track category) {
-          <mat-option [value]="category">{{ category }}</mat-option>
-        }
-      </mat-select>
-    </span>
+  <div class="bg-white shadow rounded-4 border border-light-subtle mt-5 p-3">
+    <div class="row g-3 align-items-center">
+      <div class="col-12 col-md-3 py-1">
+        <mat-select
+          class="filter-dropdown w-100"
+          panelClass="custom-panel-class"
+          [(ngModel)]="filterStatus"
+        >
+          <mat-option value="all">All status</mat-option>
+          @for (status of statuses; track status) {
+            <mat-option [value]="status">{{ status }}</mat-option>
+          }
+        </mat-select>
+      </div>
 
-    <span class="col-md-2">
-      <mat-select
-        class="col-md-3 filter-dropdown"
-        panelClass="my-custom-panel-class"
-        [(ngModel)]="filterPriority"
-      >
-        <mat-option value="all">All Priorities</mat-option>
-        @for (priority of priorities; track priority) {
-          <mat-option [value]="priority">{{ priority }}</mat-option>
-        }
-      </mat-select>
-    </span>
+      <div class="col-12 col-md-3 py-1">
+        <mat-select
+          class="filter-dropdown w-100"
+          panelClass="custom-panel-class"
+          [(ngModel)]="filterCategory"
+        >
+          <mat-option value="all">All Categories</mat-option>
+          @for (category of categories; track category) {
+            <mat-option [value]="category">{{ category }}</mat-option>
+          }
+        </mat-select>
+      </div>
 
-    <span class="col-md-3 d-flex align-items-center gap-1 text-wrap">
-      <input type="checkbox" [(ngModel)]="showCompleted" id="showCompletedTasks" />
-      Show Completed Tasks
-    </span>
+      <div class="col-12 col-md-3 py-1">
+        <mat-select
+          class="filter-dropdown w-100"
+          panelClass="custom-panel-class"
+          [(ngModel)]="filterPriority"
+        >
+          <mat-option value="all">All Priorities</mat-option>
+          @for (priority of priorities; track priority) {
+            <mat-option [value]="priority">{{ priority }}</mat-option>
+          }
+        </mat-select>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="d-flex align-items-center gap-2 text-nowrap">
+          <input type="checkbox" [(ngModel)]="showCompleted" id="showCompletedTasks" />
+          <label for="showCompletedTasks" class="mb-0"> Show Completed Tasks </label>
+        </div>
+      </div>
+    </div>
   </div>
 
   @switch (getProductivityLevel()) {
@@ -138,11 +143,11 @@
         />
       </div>
 
-      <div class="form-group col-12 col-md-3">
+      <div class="form-group col-12 col-md-3 py-1">
         <label>Category *</label>
         <mat-select
           class="col-md-3 filter-dropdown"
-          panelClass="my-custom-panel-class"
+          panelClass="custom-panel-class"
           [(ngModel)]="newTask.category"
           required
         >
@@ -153,7 +158,7 @@
         </mat-select>
       </div>
 
-      <div class="form-group col-12 col-md-3">
+      <div class="form-group col-12 col-md-3 py-1">
         <label>Priority</label>
         <select [(ngModel)]="newTask.priority">
           @for (priority of priorities; track priority) {
@@ -162,17 +167,17 @@
         </select>
       </div>
 
-      <div class="form-group col-12 col-md-3">
+      <div class="form-group col-12 col-md-3 py-1">
         <label>Due Date *</label>
         <input type="date" [(ngModel)]="newTask.dueDate" required />
       </div>
 
-      <div class="form-group col-12 col-md-3">
+      <div class="form-group col-12 col-md-3 py-1">
         <label>Status</label>
         <mat-select
           [(ngModel)]="newTask.status"
           class="filter-dropdown"
-          panelClass="my-custom-panel-class"
+          panelClass="custom-panel-class"
         >
           @for (status of statuses; track status) {
             <mat-option [value]="status">{{ status }}</mat-option>
@@ -180,7 +185,7 @@
         </mat-select>
       </div>
 
-      <div class="form-group" style="grid-column: 1 / -1">
+      <div class="form-group py-1" style="grid-column: 1 / -1">
         <label>Description</label>
         <textarea
           [(ngModel)]="newTask.description"
@@ -230,7 +235,7 @@
                 <input
                   type="checkbox"
                   [checked]="task.status === 'completed'"
-                  (change)="toggleTaskComplete(task.id)"
+                  (change)="toggleTaskComplete(task?.id)"
                 />
               </div>
 
@@ -249,8 +254,11 @@
                   <span [class]="'status-badge status-' + task.status">
                     {{ task.status }}
                   </span>
-                  <span [style.color]="isOverdue(task) ? '#ef4444' : '#64748b'">
-                    Due: {{ task.dueDate | date }}
+                  <span
+                    class="d-flex align-items-center"
+                    [style.color]="isOverdue(task) ? '#ef4444' : '#64748b'"
+                  >
+                    Due: {{ task.dueDate | formatingDate }}
                   </span>
                 </div>
               </div>
@@ -258,7 +266,7 @@
 
             <!-- Delete -->
             <div class="col-auto d-flex align-items-center">
-              <button class="btn btn-danger">Delete</button>
+              <button class="btn btn-danger" (click)="deleteTask(task?.id)">Delete</button>
             </div>
           </div>
         </div>
@@ -277,10 +285,4 @@
       </div>
     </div>
   }
-</div>
-
-<div class="productivity-score">
-  <div class="score-label">Your Productivity Score</div>
-  <div class="score-value">{{ getCompletionRate() }}%</div>
-  <div class="score-label">Keep going!</div>
 </div>

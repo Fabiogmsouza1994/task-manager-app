@@ -1,11 +1,11 @@
-interface Task {
-id: number;
+interface DashboardInterface {
+id?: number;
 title: string;
 description: string;
 category: string;
 priority: string;
-dueDate: Date;
+dueDate: string;
 status: string;
-createdAt: Date;
+createdAt?: Date | string;
 completedAt?: Date;
 }
