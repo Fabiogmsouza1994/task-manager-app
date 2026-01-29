@@ -1,0 +1,22 @@
+@if (type === 'clear') {
+  <button class="default p-2 border-none text-white rounded-3" [disabled]="disabled">
+    <span class="d-flex align-items-center gap-3">
+      <mat-icon fontIcon="clear_all"></mat-icon>
+      Clear
+    </span>
+  </button>
+} @else if (type === 'add') {
+  <button class="default p-2 border-none text-white rounded-3" [disabled]="disabled">
+    <span class="d-flex align-items-center gap-3">
+      <mat-icon fontIcon="add"></mat-icon>
+      Add
+    </span>
+  </button>
+} @else {
+  <button class="default p-2 border-none text-white rounded-3" [disabled]="disabled">
+    <span class="d-flex align-items-center gap-3">
+      {{ textButton }}
+      <mat-icon [fontIcon]="icon"></mat-icon>
+    </span>
+  </button>
+}

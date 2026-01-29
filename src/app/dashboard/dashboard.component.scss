@@ -116,25 +116,6 @@
   font-weight: 500;
 }
  
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 10px 12px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 15px;
-  transition: border-color 0.3s;
-  background: white;
-}
- 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #4f46e5;
-  background: #f8faff;
-}
- 
 .form-group textarea {
   resize: vertical;
   min-height: 80px;
@@ -144,74 +125,6 @@
 .form-actions {
   display: flex;
   gap: 10px;
-}
- 
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
- 
-.btn-primary {
-  background: #9B1061;
-  color: white;
-}
- 
-.btn-primary:hover:not(:disabled) {
-  background: #770445;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(192, 73, 34, 0.3);
-}
- 
-.btn-primary:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-  transform: none;
-}
- 
-.btn-secondary {
-  background: #64748b;
-  color: white;
-}
- 
-.btn-secondary:hover {
-  background: #475569;
-}
- 
-.btn-success {
-  background: #10b981;
-  color: white;
-}
- 
-.btn-success:hover {
-  background: #059669;
-}
- 
-.btn-danger {
-  background: #ef4444;
-  color: white;
-  padding: 5px 10px;
-  font-size: 13px;
-}
- 
-.btn-danger:hover {
-  background: #dc2626;
-}
- 
-.btn-warning {
-  background: #f59e0b;
-  color: white;
-}
- 
-.btn-warning:hover {
-  background: #d97706;
 }
  
 /* Task List Section */

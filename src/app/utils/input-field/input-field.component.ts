@@ -15,10 +15,12 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'input-field',
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,14 +31,15 @@ import {
     },
   ],
 })
-export class InputField implements OnInit {
+export class InputFieldComponent implements OnInit {
   @Input() id!: string;
-  @Input() type!: 'text' | 'number';
   @Input() fieldName!: string;
   @Input() label!: string;
   @Input() maxLength!: string;
+  @Input() type: 'text' | 'number' = 'text';
   @Input() placeholder: string = '';
   @Input() name: string = '';
+  @Input() textArea!: boolean;
   @Output() focus: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
   @Output() blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
 

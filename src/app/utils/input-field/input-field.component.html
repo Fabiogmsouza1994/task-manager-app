@@ -1,13 +1,32 @@
-<label
-  >{{ label }}
-  <span class="text-danger px-1" *ngIf="this.formControl?.errors?.['required']">*</span></label
->
-<input
-  class="input-dropdown"
-  [formControlName]="fieldName"
-  [placeholder]="placeholder"
-  [name]="name"
-  (focus)="onFocus($event)"
-  (blur)="onBlur($event)"
+<span class="d-flex flex-column pt-1">
+  <label class="p-1 fw-bold">
+    {{ label }}
+    @if (formControl.errors?.['required']) {
+      <span class="text-danger px-1">*</span>
+    }
+  </label>
 
-/>
+  @if (textArea) {
+    <textarea
+      class="input-field"
+      [id]="id"
+      [name]="name"
+      [formControlName]="fieldName"
+      [placeholder]="placeholder"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+    ></textarea>
+  } @else {
+    <input
+      matInput
+      class="input-field"
+      [type]="type"
+      [id]="id"
+      [name]="name"
+      [formControlName]="fieldName"
+      [placeholder]="placeholder"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+    />
+  }
+</span>

@@ -1,0 +1,19 @@
+.clear {
+  background-color: #5a1355;
+}
+
+.default {
+  background-color: #5a1355;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  min-width: 10%;
+}
+
+.default:hover {
+  background-color: #8a0079;
+}
+
+.default:disabled {
+  background-color: silver;
+}

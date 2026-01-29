@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+/*import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'formatingDate' })
 export class FormatingDatePipe implements PipeTransform {
@@ -18,4 +18,4 @@ export class FormatingDatePipe implements PipeTransform {
 
     return `${month}/${day}/${year}`;
   }
-}
+}*/

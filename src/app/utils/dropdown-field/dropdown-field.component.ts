@@ -23,7 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
     },
   ],
 })
-export class DropdownField<T> {
+export class DropdownFieldComponent<T> {
   @Input() list: T[] = [];
   @Input() label: string = '';
   @Input() fieldName!: string;

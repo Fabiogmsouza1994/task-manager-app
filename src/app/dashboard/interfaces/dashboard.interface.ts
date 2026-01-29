@@ -1,10 +1,10 @@
 interface DashboardInterface {
 id?: number;
-title: string;
-description: string;
-category: string;
-priority: string;
-dueDate: string;
+title?: string;
+description?: string;
+category?: string;
+priority?: string;
+dueDate: Date;
 status: string;
 createdAt?: Date | string;
 completedAt?: Date;

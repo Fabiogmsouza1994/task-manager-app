@@ -1,4 +1,4 @@
-.input-dropdown {
+.input-field {
   padding: 10px 15px;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
@@ -6,4 +6,9 @@
   font-size: 15px;
   cursor: pointer;
   transition: border-color 0.3s;
+}
+ 
+.input-field:focus {
+  outline: none;
+  border-color: #F593C6;
 }
