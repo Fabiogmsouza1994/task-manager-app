@@ -23,14 +23,17 @@ import { DashboardService } from './services/dashboard.service';
 import { InputFieldComponent } from '../utils/input-field/input-field.component';
 import { DropdownFieldComponent } from '../utils/dropdown-field/dropdown-field.component';
 import { UtilsButtonComponent } from '../utils/utils-button/utils-button.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { map, Observable, startWith } from 'rxjs';
+import { ApiResponsesModel } from '../models/apis-responses.model';
+import { UtilsDateFieldComponent } from '../utils/utils-input-date/utils-date-field.component';
+import { UtilsDateFieldConfig } from '../utils/utils-input-date/interfaces/utils-date-field.interface';
 
 @Component({
   selector: 'dashboard-page',
   imports: [
     InputFieldComponent,
     DropdownFieldComponent,
+    UtilsDateFieldComponent,
     UtilsButtonComponent,
     CommonModule,
     FormsModule,
@@ -47,7 +50,6 @@ export class DashboardComponent implements OnInit {
     private readonly _alertService: AlertService,
     private readonly _route: ActivatedRoute,
     private readonly _fb: FormBuilder,
-    private _injector: Injector,
   ) {
     this.form = this._fb.group({
       title: ['', Validators.required],
@@ -66,8 +68,15 @@ export class DashboardComponent implements OnInit {
 
   form!: FormGroup;
   tasks: DashboardInterface[] = [];
+  dueDateConfig: UtilsDateFieldConfig = {
+    id: 'dueDate',
+    label: 'Due date',
+    fieldName: 'dueDate',
+    keepInvalid: false,
+  };
 
   isAddDisabled$!: Observable<boolean>;
+  someFilterNotAll$!: Observable<boolean>;
 
   categories: string[] = [
     'work',
@@ -97,9 +106,6 @@ export class DashboardComponent implements OnInit {
     status: 'pending',
   };
 
-  filterStatus: string = 'all';
-  filterCategory: string = 'all';
-  filterPriority: string = 'all';
   showCompleted: boolean = false;
 
   get completionColor(): string {
@@ -112,6 +118,14 @@ export class DashboardComponent implements OnInit {
     this.isAddDisabled$ = this.form.valueChanges.pipe(
       startWith(this.form.getRawValue()),
       map(({ title, category, dueDate }) => !title?.trim() || !category || !dueDate),
+    );
+
+    this.someFilterNotAll$ = this.form.valueChanges.pipe(
+      startWith(this.form.getRawValue()),
+      map(
+        ({ filterStatus, filterCategories, filterPriorities }) =>
+          !filterStatus || !filterCategories || !filterPriorities,
+      ),
     );
   }
 
@@ -156,8 +170,9 @@ export class DashboardComponent implements OnInit {
       status: this.form.get('status')?.value,
     };
 
-    this.tasks.push(task);
-    this._service.addData(task).subscribe(() => {});
+    this._service.addData(task).subscribe((resp: ApiResponsesModel<DashboardInterface>) => {
+      if (resp?.success && resp?.data) this.tasks.push(resp.data);
+    });
     this.clearForm();
   }
 
@@ -174,19 +189,18 @@ export class DashboardComponent implements OnInit {
 
   getFilteredTasks(): DashboardInterface[] {
     let filtered: DashboardInterface[] = [...this.tasks];
+    const filterStatus: string = this.form.get('filterStatus')?.value;
+    const filterCategories: string = this.form.get('filterCategories')?.value;
+    const filterPriorities: string = this.form.get('filterPriorities')?.value;
 
-    if (this.form.get('filterStatus')?.value !== 'all')
-      filtered = filtered.filter((task: DashboardInterface) => task.status === this.filterStatus);
+    if (filterStatus !== 'all')
+      filtered = filtered.filter((task: DashboardInterface) => task.status === filterStatus);
 
-    if (this.form.get('filterCategories')?.value !== 'all')
-      filtered = filtered.filter(
-        (task: DashboardInterface) => task.category === this.filterCategory,
-      );
+    if (filterCategories !== 'all')
+      filtered = filtered.filter((task: DashboardInterface) => task.category === filterCategories);
 
-    if (this.form.get('filterPriorities')?.value !== 'all')
-      filtered = filtered.filter(
-        (task: DashboardInterface) => task.priority === this.filterPriority,
-      );
+    if (filterPriorities !== 'all')
+      filtered = filtered.filter((task: DashboardInterface) => task.priority === filterPriorities);
 
     if (this.showCompleted)
       filtered = filtered.filter((task: DashboardInterface) => task.status === 'completed');

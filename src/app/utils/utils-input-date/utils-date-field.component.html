@@ -1,0 +1,26 @@
+<label class="p-1 fw-bold">
+  {{ config.label || '' }}
+  @if (formControl.errors?.['required']) {
+    <span class="text-danger px-1">*</span>
+  }
+</label>
+<p-fluid class="card flex flex-wrap gap-4">
+  <div class="flex-auto">
+    <p-datepicker
+      class="date-field"
+      inputId="icondisplay"
+      [iconDisplay]="'input'"
+      [id]="config.id || null"
+      [formControlName]="config.fieldName"
+      [dateFormat]="config.dateFormat || 'mm/dd/yy'"
+      [showIcon]="true"
+      [minDate]="config.minDate || null"
+      [maxDate]="config.maxDate || null"
+      [showTime]="config.showTime || false"
+      [placeholder]="config.placeholder || ''"
+      [showOnFocus]="false"
+      [keepInvalid]="config.keepInvalid"
+      [showOtherMonths]="false"
+    ></p-datepicker>
+  </div>
+</p-fluid>

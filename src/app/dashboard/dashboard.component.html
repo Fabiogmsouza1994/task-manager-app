@@ -138,8 +138,7 @@
       </div>
 
       <div class="form-group col-12 col-md-3 py-1">
-        <label>Due Date *</label>
-        <input type="date" formControlName="dueDate" />
+        <utils-date-field label="Due date" [config]="dueDateConfig"></utils-date-field>
       </div>
 
       <div class="form-group col-12 col-md-3 py-1">
@@ -197,23 +196,23 @@
               <div class="flex-grow-1 ms-2">
                 <div class="d-flex gap-2 align-items-center">
                   <span class="badge rounded-pill bg-dark">{{ idx + 1 }}</span>
-                  <span class="fw-bold">{{ form.get('title')?.value }}</span>
+                  <span class="fw-bold">{{ task.title }}</span>
                 </div>
 
-                <p>{{ form.get('description')?.value }}</p>
+                <p>{{ task.description }}</p>
 
                 <div class="task-meta d-flex gap-2 flex-wrap">
                   <span [class]="'category-tag category-' + task.category">
-                    {{ form.get('category')?.value }}
+                    {{ task.category }}
                   </span>
                   <span [class]="'status-badge status-' + task.status">
-                    {{ form.get('status')?.value }}
+                    {{ task.status }}
                   </span>
                   <span
                     class="d-flex align-items-center"
                     [style.color]="isOverdue(task) ? '#ef4444' : '#64748b'"
                   >
-                    Due: {{ form.get('dueDate')?.value | date }}
+                    Due: {{ task.dueDate | date }}
                   </span>
                 </div>
               </div>
@@ -231,7 +230,7 @@
       <div class="empty-state-description"><div class="empty-state-icon">[EMPTY]</div></div>
 
       <div class="empty-state-title">
-        @if (filterStatus !== 'all' || filterCategory !== 'all' || filterPriority !== 'all') {
+        @if (someFilterNotAll$ | async) {
           Try adjusting your filters or add a new task.
         } @else {
           No tasks yet.

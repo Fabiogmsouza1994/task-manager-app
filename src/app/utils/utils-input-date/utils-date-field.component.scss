@@ -1,0 +1,58 @@
+.card {
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+}
+
+.date-field {
+  padding: 10px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  --p-datepicker-input-border-color: transparent !important;
+  --p-datepicker-input-invalid-border-color: transparent !important;
+  --p-inputtext-border-color: transparent !important;
+  --p-inputtext-invalid-border-color: transparent !important;
+  --p-inputtext-focus-border-color: transparent !important;
+  --p-datepicker-focus-ring-shadow: none !important;
+  --p-inputtext-focus-ring-shadow: none !important;
+  --p-datepicker-input-background: transparent !important;
+  --p-inputtext-hover-border-color: transparent !important;
+  --p-datepicker-input-hover-border-color: transparent !important;
+}
+
+.date-field:focus {
+  outline: none;
+  border-color: #f593c6;
+}
+
+.date-field .p-datepicker-input {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.date-field.p-datepicker {
+  padding: 0 !important;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.date-field.p-datepicker:has(.p-datepicker-input:focus) {
+  outline: none;
+  border-color: #f593c6 !important;
+}
+
+.date-field .p-datepicker-input {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
