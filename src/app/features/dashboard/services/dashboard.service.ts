@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponsesModel } from '../../models/apis-responses.model';
-import { ResponseErrorHandlerService } from '../../services/response-error-handler.service';
+import { ResponseErrorHandlerService } from '../../../services/response-error-handler.service';
+import { ApiResponsesModel } from '../../../models/apis-responses.model';
 
 @Injectable({
   providedIn: 'root',
