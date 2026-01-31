@@ -27,7 +27,7 @@ import { map, Observable, startWith } from 'rxjs';
 import { ApiResponsesModel } from '../models/apis-responses.model';
 import { UtilsDateFieldComponent } from '../utils/utils-input-date/utils-date-field.component';
 import { UtilsDateFieldConfig } from '../utils/utils-input-date/interfaces/utils-date-field.interface';
-
+import { UtilsCardComponent } from '../utils/utils-cards/utils-card.component';
 @Component({
   selector: 'dashboard-page',
   imports: [
@@ -35,6 +35,7 @@ import { UtilsDateFieldConfig } from '../utils/utils-input-date/interfaces/utils
     DropdownFieldComponent,
     UtilsDateFieldComponent,
     UtilsButtonComponent,
+    UtilsCardComponent,
     CommonModule,
     FormsModule,
     MatSelectModule,
@@ -74,7 +75,6 @@ export class DashboardComponent implements OnInit {
     fieldName: 'dueDate',
     keepInvalid: false,
   };
-
   isAddDisabled$!: Observable<boolean>;
   someFilterNotAll$!: Observable<boolean>;
 
