@@ -1,4 +1,4 @@
-export interface UtilsDateFieldConfig {
+export interface SharedDateFieldConfig {
   keepInvalid: boolean;
   fieldName: string;
   id?: string;

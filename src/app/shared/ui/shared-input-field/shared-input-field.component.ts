@@ -19,10 +19,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'input-field',
+  selector: 'shared-input-field',
   imports: [MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, CommonModule],
-  templateUrl: './input-field.component.html',
-  styleUrl: './input-field.component.scss',
+  templateUrl: './shared-input-field.component.html',
+  styleUrl: './shared-input-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [
     {
@@ -31,7 +31,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     },
   ],
 })
-export class InputFieldComponent implements OnInit {
+export class SharedInputFieldComponent implements OnInit {
   @Input() id!: string;
   @Input() fieldName!: string;
   @Input() label!: string;

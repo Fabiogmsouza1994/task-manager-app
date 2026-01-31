@@ -11,10 +11,10 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-  selector: 'dropdown-field',
+  selector: 'shared-dropdown-field',
   imports: [MatSelectModule, FormsModule, ReactiveFormsModule, CommonModule],
-  templateUrl: './dropdown-field.component.html',
-  styleUrl: './dropdown-field.component.scss',
+  templateUrl: './shared-dropdown-field.component.html',
+  styleUrl: './shared-dropdown-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [
     {
@@ -23,7 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
     },
   ],
 })
-export class DropdownFieldComponent<T> {
+export class SharedDropdownFieldComponent<T> {
   @Input() list: T[] = [];
   @Input() label: string = '';
   @Input() fieldName!: string;

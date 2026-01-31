@@ -18,24 +18,23 @@ import {
 } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
-import { AlertService } from '../services/alert.service';
 import { DashboardService } from './services/dashboard.service';
-import { InputFieldComponent } from '../utils/input-field/input-field.component';
-import { DropdownFieldComponent } from '../utils/dropdown-field/dropdown-field.component';
-import { UtilsButtonComponent } from '../utils/utils-button/utils-button.component';
 import { map, Observable, startWith } from 'rxjs';
-import { ApiResponsesModel } from '../models/apis-responses.model';
-import { UtilsDateFieldComponent } from '../utils/utils-input-date/utils-date-field.component';
-import { UtilsDateFieldConfig } from '../utils/utils-input-date/interfaces/utils-date-field.interface';
-import { UtilsCardComponent } from '../utils/utils-cards/utils-card.component';
+import { SharedDropdownFieldComponent } from '../../shared/ui/shared-dropdown-field/shared-dropdown-field.component';
+import { SharedDateFieldComponent } from '../../shared/ui/shared-date-field/shared-date-field.component';
+import { SharedInputFieldComponent } from '../../shared/ui/shared-input-field/shared-input-field.component';
+import { SharedButtonComponent } from '../../shared/ui/shared-button/shared-button.component';
+import { SharedCardComponent } from '../../shared/ui/shared-card/shared-card.component';
+import { SharedDateFieldConfig } from '../../shared/ui/shared-date-field/interfaces/shared-date-field.interface';
+import { ApiResponsesModel } from '../../models/apis-responses.model';
 @Component({
   selector: 'dashboard-page',
   imports: [
-    InputFieldComponent,
-    DropdownFieldComponent,
-    UtilsDateFieldComponent,
-    UtilsButtonComponent,
-    UtilsCardComponent,
+    SharedInputFieldComponent,
+    SharedDropdownFieldComponent,
+    SharedDateFieldComponent,
+    SharedButtonComponent,
+    SharedCardComponent,
     CommonModule,
     FormsModule,
     MatSelectModule,
@@ -48,7 +47,6 @@ import { UtilsCardComponent } from '../utils/utils-cards/utils-card.component';
 export class DashboardComponent implements OnInit {
   constructor(
     private readonly _service: DashboardService,
-    private readonly _alertService: AlertService,
     private readonly _route: ActivatedRoute,
     private readonly _fb: FormBuilder,
   ) {
@@ -69,7 +67,7 @@ export class DashboardComponent implements OnInit {
 
   form!: FormGroup;
   tasks: DashboardInterface[] = [];
-  dueDateConfig: UtilsDateFieldConfig = {
+  dueDateConfig: SharedDateFieldConfig = {
     id: 'dueDate',
     label: 'Due date',
     fieldName: 'dueDate',

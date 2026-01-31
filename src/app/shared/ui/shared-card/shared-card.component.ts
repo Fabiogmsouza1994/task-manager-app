@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'utils-card',
+  selector: 'shared-card',
   imports: [],
-  templateUrl: './utils-card.component.html',
-  styleUrl: './utils-card.component.scss',
+  templateUrl: './shared-card.component.html',
+  styleUrl: './shared-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UtilsCardComponent { 
+export class SharedCardComponent { 
   @Input() label!: string;  
   @Input() colorValue!: string;
 }

@@ -9,15 +9,15 @@ import {
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Fluid } from 'primeng/fluid';
-import { UtilsDateFieldConfig } from './interfaces/utils-date-field.interface';
+import { SharedDateFieldConfig } from './interfaces/shared-date-field.interface';
 import { InputMaskModule } from 'primeng/inputmask';
 
 
 @Component({
-  selector: 'utils-date-field',
+  selector: 'shared-date-field',
   imports: [ReactiveFormsModule, DatePickerModule, Fluid, InputMaskModule],
-  templateUrl: './utils-date-field.component.html',
-  styleUrl: './utils-date-field.component.scss',
+  templateUrl: './shared-date-field.component.html',
+  styleUrl: './shared-date-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter()],
   viewProviders: [
@@ -27,9 +27,9 @@ import { InputMaskModule } from 'primeng/inputmask';
     },
   ],
 })
-export class UtilsDateFieldComponent implements OnInit {
+export class SharedDateFieldComponent implements OnInit {
   @Input() placeholder: string = '';
-  @Input() config!: UtilsDateFieldConfig;
+  @Input() config!: SharedDateFieldConfig;
 
   formControl!: FormControl;
 

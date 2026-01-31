@@ -3,13 +3,13 @@ import { booleanAttribute, ChangeDetectionStrategy, Component, Input } from '@an
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'utils-button',
+  selector: 'shared-button',
   imports: [CommonModule, MatIconModule],
-  templateUrl: './utils-button.component.html',
-  styleUrl: './utils-button.component.scss',
+  templateUrl: './shared-button.component.html',
+  styleUrl: './shared-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UtilsButtonComponent { 
+export class SharedButtonComponent { 
   @Input() type: 'clear' | 'add' | 'delete' | 'update' | 'save' | 'default' = 'default'; 
   @Input() textButton: string = "";
   @Input() icon: string = "";
