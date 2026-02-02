@@ -5,5 +5,5 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, resolve: { todos: TaskManagerResolver } },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: '/dashboard' },
+  { path: '**', redirectTo: '/dashboard' }
 ];

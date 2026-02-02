@@ -1,0 +1,20 @@
+<div class="bg-white shadow rounded-4 border border-light-subtle">
+  <form [formGroup]="form">
+    <div class="row my-1">
+      <shared-input-field placeholder="Full name" formControlName="fullName"> </shared-input-field>
+    </div>
+    <div class="row my-1">
+      <shared-input-field placeholder="Email" formControlName="email"> </shared-input-field>
+    </div>
+    <div class="row my-1">
+      <shared-input-field placeholder="Password" formControlName="password"> </shared-input-field>
+    </div>
+    <div class="row my-1">
+      <shared-input-field placeholder="Confirm password" formControlName="confirmPassword">
+      </shared-input-field>
+    </div>
+    <div class="row my-1">
+      <shared-button type="submit"></shared-button>
+    </div>
+  </form>
+</div>
