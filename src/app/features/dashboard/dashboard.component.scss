@@ -350,13 +350,6 @@
   transition: box-shadow 0.3s;
 }
  
-/* Focus States */
-input:focus,
-select:focus,
-textarea:focus {
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
- 
 /* Validation States */
 .field-error {
   border-color: #ef4444 !important;

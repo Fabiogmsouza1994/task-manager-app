@@ -3,7 +3,9 @@
   <span class="text-danger px-1" *ngIf="this.formControl.errors?.['required']">*</span></label
 >
 <mat-select class="filter-dropdown" panelClass="custom-panel-class" [formControlName]="fieldName">
-  <mat-option *ngIf="valueAll" value="all">{{ valueAll }}</mat-option>
+  @if (valueAll) {
+    <mat-option value="all">{{ valueAll }}</mat-option>
+  }
   @for (option of list; track option) {
     <mat-option [value]="option">{{ option }}</mat-option>
   }

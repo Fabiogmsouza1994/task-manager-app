@@ -1,5 +1,5 @@
 <span class="d-flex flex-column pt-1">
-  <label class="p-1 fw-bold">
+  <label class="mt-1 p-1 fw-bold">
     {{ label }}
     @if (formControl.errors?.['required']) {
       <span class="text-danger px-1">*</span>
@@ -16,17 +16,45 @@
       (focus)="onFocus($event)"
       (blur)="onBlur($event)"
     ></textarea>
+  } @else if (type === 'password') {
+    <mat-form-field appearance="outline" class="rounded-input">
+      <input
+        matInput
+        [type]="hidePassword ? 'password' : 'text'"
+        [id]="id"
+        [name]="name"
+        [formControlName]="fieldName"
+        [placeholder]="placeholder"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
+      />
+
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Toggle password visibility'"
+      >
+        <mat-icon>
+          {{ hidePassword ? 'visibility' : 'visibility_off' }}
+        </mat-icon>
+      </button>
+    </mat-form-field>
   } @else {
-    <input
-      matInput
-      class="shared-input-field"
-      [type]="type"
-      [id]="id"
-      [name]="name"
-      [formControlName]="fieldName"
-      [placeholder]="placeholder"
-      (focus)="onFocus($event)"
-      (blur)="onBlur($event)"
-    />
+    <mat-form-field appearance="outline" class="rounded-input">
+      <input
+        matInput
+        [type]="type"
+        [id]="id"
+        [name]="name"
+        [formControlName]="fieldName"
+        [placeholder]="placeholder"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
+      />
+    </mat-form-field>
+  }
+  @if (definirMsgValidacao()) {
+    <small class="fs-6 py-2 text-danger text-wrap text-start">{{ msgValidacao }}</small>
   }
 </span>

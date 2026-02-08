@@ -1,0 +1,46 @@
+@use '../variables.scss' as *;
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: $focus-field-border-color !important;
+}
+
+.mat-mdc-form-field-infix {
+  min-height: unset !important;
+  height: auto !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.mat-mdc-input-element {
+  padding-inline: 12px !important;
+      line-height: 2 !important;
+  vertical-align: middle;
+}
+
+.rounded-input .mdc-notched-outline__leading {
+  border-top-left-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+  width: 8px !important;
+}
+
+.rounded-input .mdc-notched-outline__trailing {
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+.mat-mdc-icon-button:hover {
+  cursor: pointer;
+  color: $input-icon-hover-color !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.mat-mdc-form-field-icon-suffix {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 8px !important;
+}

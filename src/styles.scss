@@ -1,4 +1,10 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+@import './styles/material.scss';
+@import "./variables.scss";
+
+.shared-title {
+  color: $title-color;
+}
 
 .list-group-item.active {
   color: #fff;
@@ -7,12 +13,6 @@
 
 .btn.btn-primary {
   background-color: #f74ca6;
-}
-
-.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
-.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
-.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: #f74ca6 !important;
 }
 
 .filter-dropdown-panel {
