@@ -7,15 +7,15 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { SharedInputFieldComponent } from '../../../shared/ui/shared-input-field/shared-input-field.component';
-import { SharedButtonComponent } from '../../../shared/ui/shared-button/shared-button.component';
-import { AuthService } from '../../../core/services/auth.service';
+import { SharedInputFieldComponent } from '../../../../shared/ui/shared-input-field/shared-input-field.component';
+import { SharedButtonComponent } from '../../../../shared/ui/shared-button/shared-button.component';
+import { AuthService } from '../../../../core/services/auth.service';
 import {
   passwordMatchValidator,
   passwordStrengthValidator,
-} from '../../../shared/validators/password.validator';
-import { PASSWORD_SPECIAL_CHAR_REGEX } from '../../../shared/validators/password.pattern';
-import { SharedTitleComponent } from '../../../shared/ui/shared-title/shared-title';
+} from '../../../../shared/validators/password.validator';
+import { SharedTitleComponent } from '../../../../shared/ui/shared-title/shared-title.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'features-register',
@@ -31,8 +31,9 @@ import { SharedTitleComponent } from '../../../shared/ui/shared-title/shared-tit
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  private _fb = inject(FormBuilder);
-  private _authService = inject(AuthService);
+  private _fb: FormBuilder = inject(FormBuilder);
+  private _authService: AuthService = inject(AuthService);
+  private _toastr: ToastrService = inject(ToastrService);
 
   isSubmitted!: boolean;
 
@@ -73,10 +74,29 @@ export class RegisterComponent {
     this.isSubmitted = true;
     if (this.form.valid)
       this._authService.createUser(this.form.value).subscribe({
-        next: (res) => {
-          console.log(res);
+        next: (res: any) => {
+          if (res.succeeded) {
+            this.form.reset();
+            this.isSubmitted = false;
+          }
         },
-        error: (err) => console.log('error', err),
+        error: (err) => {
+          if (err.error.errors) {
+            err.res.error.errors.forEach((x: any) => {
+              switch (x.code) {
+                case 'DuplicateUserName':
+                  break;
+
+                case 'DuplicateEmail':
+                  this._toastr.error('Email is already taken.', 'Registration failed');
+                  break;
+
+                default:
+                  this._toastr.error('Contact the developer', 'Registration failed');
+              }
+            });
+          } else console.log('error', err);
+        },
       });
   }
 

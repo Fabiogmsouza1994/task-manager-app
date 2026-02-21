@@ -1,0 +1,32 @@
+<div class="m-5 bg-white shadow rounded-4 border border-light-subtle">
+  <form [formGroup]="form" class="mx-4" (submit)="onSubmit()">
+    <shared-title icon="how_to_reg" title="User Register"></shared-title>
+    <div class="row my-1">
+      <shared-input-field label="Name" fieldName="fullName"> </shared-input-field>
+    </div>
+    <div class="row my-1">
+      <shared-input-field label="Email" fieldName="email"> </shared-input-field>
+    </div>
+    <div class="row my-1">
+      <shared-input-field
+        label="Password"
+        placeholder="Password"
+        type="password"
+        fieldName="password"
+      >
+      </shared-input-field>
+    </div>
+    <div class="row my-1">
+      <shared-input-field label="Confirm password" type="password" fieldName="confirmPassword">
+      </shared-input-field>
+    </div>
+    <div class="row my-3 py-1">
+      <shared-button
+        type="submit"
+        textButton="Register"
+        icon="how_to_reg"
+        [disabled]="form.invalid"
+      ></shared-button>
+    </div>
+  </form>
+</div>

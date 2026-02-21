@@ -1,9 +1,9 @@
-@use '../variables.scss' as *;
+@use './abstract/variables' as *;
 
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: $focus-field-border-color !important;
+  border-color: var(--color-border-focus) !important;
 }
 
 .mat-mdc-form-field-infix {
@@ -15,7 +15,7 @@
 
 .mat-mdc-input-element {
   padding-inline: 12px !important;
-      line-height: 2 !important;
+  line-height: 2 !important;
   vertical-align: middle;
 }
 
@@ -32,7 +32,7 @@
 
 .mat-mdc-icon-button:hover {
   cursor: pointer;
-  color: $input-icon-hover-color !important;
+  color: var(--color-input-icon-hover) !important;
 }
 
 .mat-mdc-form-field-subscript-wrapper {
