@@ -2,10 +2,14 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  Signal,
+  signal,
+  WritableSignal,
 } from '@angular/core';
 import {
   ControlContainer,
@@ -57,14 +61,22 @@ export class SharedInputFieldComponent implements OnInit {
 
   formControl!: FormControl;
   isFocused!: boolean;
-  msgValidacao!: string;
+  msgValidacao: WritableSignal<string | null> = signal(null);
   focado!: boolean;
-  hidePassword: boolean = true;
+  hidePassword: WritableSignal<boolean> = signal(true);
+  passwordType: Signal<string> = computed(() => (this.hidePassword() ? 'password' : 'text'));
+  passwordIconVisibility: Signal<string> = computed(() =>
+    this.hidePassword() ? 'visibility_off' : 'visibility',
+  );
 
   constructor(private controlContainer: ControlContainer) {}
 
   ngOnInit(): void {
     this.manageFormControl();
+  }
+
+  togglePassword(): void {
+    this.hidePassword.update((hidden: boolean) => !hidden);
   }
 
   manageFormControl(): void {
@@ -76,33 +88,33 @@ export class SharedInputFieldComponent implements OnInit {
 
   definirMsgValidacao(): boolean {
     if (this.formControl?.hasError('required') && !this.focado && this.exibirMsgCampoObrigatorio) {
-      this.msgValidacao = 'Campo obrigatório.';
+      this.msgValidacao.set('Campo obrigatório.');
       return true;
     }
 
     if (this.type === 'password') {
       if (this.formControl?.hasError('minLength')) {
-        this.msgValidacao = 'Insira no mínimo 8 caracteres.';
+        this.msgValidacao.set('Insira no mínimo 8 caracteres.');
         return true;
       } else if (this.formControl?.hasError('uppercase')) {
-        this.msgValidacao = 'Insira ao menos uma letra maiúscula.';
+        this.msgValidacao.set('Insira ao menos uma letra maiúscula.');
         return true;
       } else if (this.formControl?.hasError('number')) {
-        this.msgValidacao = 'Insira ao menos um número.';
+        this.msgValidacao.set('Insira ao menos um número.');
         return true;
       } else if (this.formControl?.hasError('specialChar')) {
-        this.msgValidacao = 'Insira ao menos um caracter especial.';
+        this.msgValidacao.set('Insira ao menos um caracter especial.');
         return true;
       }
     } else if (this.formControl?.hasError('min')) {
-      this.msgValidacao = `Insira um valor maior ou igual a ${
-        this.formControl.errors?.['min'].min
-      }.`;
+      this.msgValidacao.set(
+        `Insira um valor maior ou igual a ${this.formControl.errors?.['min'].min}.`,
+      );
       return true;
     } else if (this.formControl?.hasError('max')) {
-      this.msgValidacao = `Insira um valor no máximo igual a ${
-        this.formControl.errors?.['max'].max
-      }.`;
+      this.msgValidacao.set(
+        `Insira um valor no máximo igual a ${this.formControl.errors?.['max'].max}.`,
+      );
       return true;
     }
 

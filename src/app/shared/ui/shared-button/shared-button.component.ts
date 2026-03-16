@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class SharedButtonComponent {
   @Input() type: 'submit' | null = null;
-  @Input() style: 'clear' | 'add' | 'delete' | 'update' | 'save' | 'default' = 'default';
+  @Input() buttonStyle: 'clear' | 'add' | 'delete' | 'update' | 'save' | 'default' = 'default';
   @Input() textButton: string = '';
   @Input() icon: string = '';
   @Input() disabled: boolean | null = false;

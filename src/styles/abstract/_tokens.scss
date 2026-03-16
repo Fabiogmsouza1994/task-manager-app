@@ -1,10 +1,12 @@
-
 @use './_variables' as *;
 
 :root {
-  /* Colors */
-  --color-text-label: #{$palette-grey-dark};
+  /*TITLES*/
   --color-text-title: #{$palette-orange-base};
+
+  /*INPUT*/
+  --color-text-label: #{$palette-grey-dark};
+  --color-input-border: #{$palette-grey-dark};
   --color-border-focus: #{$palette-pink-hot};
   --color-input-icon-hover: #{$palette-pink-hot};
 }

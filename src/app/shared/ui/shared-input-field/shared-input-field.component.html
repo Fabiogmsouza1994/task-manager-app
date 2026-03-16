@@ -20,7 +20,7 @@
     <mat-form-field appearance="outline" class="rounded-input">
       <input
         matInput
-        [type]="hidePassword ? 'password' : 'text'"
+        [type]="passwordType()"
         [id]="id"
         [name]="name"
         [formControlName]="fieldName"
@@ -32,11 +32,11 @@
       <button
         mat-icon-button
         matSuffix
-        (click)="hidePassword = !hidePassword"
+        (click)="togglePassword()"
         [attr.aria-label]="'Toggle password visibility'"
       >
         <mat-icon>
-          {{ hidePassword ? 'visibility' : 'visibility_off' }}
+          {{ passwordIconVisibility() }}
         </mat-icon>
       </button>
     </mat-form-field>
@@ -55,6 +55,6 @@
     </mat-form-field>
   }
   @if (definirMsgValidacao()) {
-    <small class="fs-6 py-2 text-danger text-wrap text-start">{{ msgValidacao }}</small>
+    <small class="fs-6 py-2 text-danger text-wrap text-start">{{ msgValidacao() }}</small>
   }
 </span>

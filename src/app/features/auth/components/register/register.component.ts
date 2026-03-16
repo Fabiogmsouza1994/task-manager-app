@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { SharedInputFieldComponent } from '../../../../shared/ui/shared-input-field/shared-input-field.component';
@@ -16,6 +15,7 @@ import {
 } from '../../../../shared/validators/password.validator';
 import { SharedTitleComponent } from '../../../../shared/ui/shared-title/shared-title.component';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'features-register',
@@ -30,35 +30,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   private _fb: FormBuilder = inject(FormBuilder);
   private _authService: AuthService = inject(AuthService);
+  private _router: Router = inject(Router);
   private _toastr: ToastrService = inject(ToastrService);
 
   isSubmitted!: boolean;
-
-  passwordMatchValidator: ValidatorFn = (control: AbstractControl) => {
-    const password: AbstractControl | null = control.get('password');
-    const confirmPassword: AbstractControl | null = control.get('confirmPassword');
-
-    if (!password || !confirmPassword) return null;
-
-    if (password.value !== confirmPassword.value) {
-      confirmPassword.setErrors({
-        ...confirmPassword.errors,
-        passwordMismatch: true,
-      });
-
-      return { passwordMismatch: true };
-    }
-
-    if (confirmPassword.errors) {
-      const { passwordMismatch, ...errors } = confirmPassword.errors;
-      confirmPassword.setErrors(Object.keys(errors).length ? errors : null);
-    }
-
-    return null;
-  };
 
   form: FormGroup = this._fb.group(
     {
@@ -69,6 +47,10 @@ export class RegisterComponent {
     },
     { validators: passwordMatchValidator },
   );
+
+  ngOnInit(): void {
+    if (this._authService.isLoggedIn()) this._router.navigateByUrl('/dashboard');
+  }
 
   onSubmit(): void {
     this.isSubmitted = true;

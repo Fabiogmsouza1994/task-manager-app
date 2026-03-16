@@ -1,7 +1,14 @@
-@use './abstract/variables' as *;
+.mat-mdc-form-field .mdc-notched-outline__leading {
+  border: 2px solid var(--color-input-border) !important;
+  border-right: none !important;
+}
+
+.mat-mdc-form-field .mdc-notched-outline__trailing {
+  border: 2px solid var(--color-input-border) !important;
+  border-left: none !important;
+}
 
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
-.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
   border-color: var(--color-border-focus) !important;
 }
