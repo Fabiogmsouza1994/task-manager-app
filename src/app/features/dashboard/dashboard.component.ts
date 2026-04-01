@@ -1,9 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -22,6 +18,7 @@ import { SharedButtonComponent } from '../../shared/ui/shared-button/shared-butt
 import { SharedCardComponent } from '../../shared/ui/shared-card/shared-card.component';
 import { SharedDateFieldConfig } from '../../shared/ui/shared-date-field/interfaces/shared-date-field.interface';
 import { ApiResponsesModel } from '../../models/apis-responses.model';
+import { UserService } from '../../core/services/user.service';
 @Component({
   selector: 'dashboard-page',
   imports: [
@@ -44,6 +41,7 @@ export class DashboardComponent implements OnInit {
     private readonly _service: DashboardService,
     private readonly _route: ActivatedRoute,
     private readonly _fb: FormBuilder,
+    private readonly _userService: UserService,
   ) {
     this.form = this._fb.group({
       title: ['', Validators.required],
@@ -62,14 +60,16 @@ export class DashboardComponent implements OnInit {
 
   form!: FormGroup;
   tasks: DashboardInterface[] = [];
+  isAddDisabled$!: Observable<boolean>;
+  someFilterNotAll$!: Observable<boolean>;
+  fullName: string = '';
+
   dueDateConfig: SharedDateFieldConfig = {
     id: 'dueDate',
     label: 'Due date',
     fieldName: 'dueDate',
     keepInvalid: false,
   };
-  isAddDisabled$!: Observable<boolean>;
-  someFilterNotAll$!: Observable<boolean>;
 
   categories: string[] = [
     'work',
@@ -108,6 +108,10 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._userService.getUserProfile().subscribe({
+      next: (res: any) => (this.fullName = res.fullName),
+      error: (err: any) => {},
+    });
     this.isAddDisabled$ = this.form.valueChanges.pipe(
       startWith(this.form.getRawValue()),
       map(({ title, category, dueDate }) => !title?.trim() || !category || !dueDate),
