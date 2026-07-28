@@ -38,7 +38,7 @@ export class DashboardService {
     data: DashboardInterface
   ): Observable<ApiResponsesModel<DashboardInterface>> {
     return this._httpClient
-      .patch<DashboardInterface>(`${this.url}/${id}`, data)
+      .put<DashboardInterface>(`${this.url}/${id}`, data)
       .pipe(this._handleErrorService.handleRequest<DashboardInterface>);
   }
 

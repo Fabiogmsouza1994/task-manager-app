@@ -61,7 +61,6 @@ export class SharedInputFieldComponent implements OnInit {
 
   formControl!: FormControl;
   isFocused!: boolean;
-  msgValidacao: WritableSignal<string | null> = signal(null);
   focado!: boolean;
   hidePassword: WritableSignal<boolean> = signal(true);
   passwordType: Signal<string> = computed(() => (this.hidePassword() ? 'password' : 'text'));
@@ -86,39 +85,28 @@ export class SharedInputFieldComponent implements OnInit {
     }
   }
 
-  definirMsgValidacao(): boolean {
+  definirMsgValidacao(): string | null {
     if (this.formControl?.hasError('required') && !this.focado && this.exibirMsgCampoObrigatorio) {
-      this.msgValidacao.set('Campo obrigatório.');
-      return true;
+      return 'Campo obrigatório.';
     }
 
     if (this.type === 'password') {
       if (this.formControl?.hasError('minLength')) {
-        this.msgValidacao.set('Insira no mínimo 8 caracteres.');
-        return true;
+        return 'Insira no mínimo 8 caracteres.';
       } else if (this.formControl?.hasError('uppercase')) {
-        this.msgValidacao.set('Insira ao menos uma letra maiúscula.');
-        return true;
+        return 'Insira ao menos uma letra maiúscula.';
       } else if (this.formControl?.hasError('number')) {
-        this.msgValidacao.set('Insira ao menos um número.');
-        return true;
+        return 'Insira ao menos um número.';
       } else if (this.formControl?.hasError('specialChar')) {
-        this.msgValidacao.set('Insira ao menos um caracter especial.');
-        return true;
+        return 'Insira ao menos um caracter especial.';
       }
     } else if (this.formControl?.hasError('min')) {
-      this.msgValidacao.set(
-        `Insira um valor maior ou igual a ${this.formControl.errors?.['min'].min}.`,
-      );
-      return true;
+      return `Insira um valor maior ou igual a ${this.formControl.errors?.['min'].min}.`;
     } else if (this.formControl?.hasError('max')) {
-      this.msgValidacao.set(
-        `Insira um valor no máximo igual a ${this.formControl.errors?.['max'].max}.`,
-      );
-      return true;
+      return `Insira um valor no máximo igual a ${this.formControl.errors?.['max'].max}.`;
     }
 
-    return false;
+    return null;
   }
 
   onBlur(event: FocusEvent): void {

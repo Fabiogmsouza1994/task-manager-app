@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit {
     private readonly _route: ActivatedRoute,
     private readonly _fb: FormBuilder,
     private readonly _userService: UserService,
+    private readonly _cdr: ChangeDetectorRef,
   ) {
     this.form = this._fb.group({
       title: ['', Validators.required],
@@ -164,24 +165,29 @@ export class DashboardComponent implements OnInit {
       category: this.form.get('category')?.value,
       priority: this.form.get('priority')?.value,
       dueDate: new Date(this.form.get('dueDate')?.value),
-      status: this.form.get('status')?.value,
+      status: this.form.get('status')?.value || 'pending',
     };
 
     this._service.addData(task).subscribe((resp: ApiResponsesModel<DashboardInterface>) => {
-      if (resp?.success && resp?.data) this.tasks.push(resp.data);
+      if (resp?.success && resp?.data) {
+        this.tasks = [...this.tasks, resp.data];
+        this._cdr.markForCheck();
+      }
     });
     this.clearForm();
   }
 
   clearForm(): void {
-    this.newTask = {
+    this.form.patchValue({
       title: '',
       description: '',
       category: '',
-      priority: 'medium',
-      dueDate: null,
-      status: 'pending',
-    };
+      priority: '',
+      status: '',
+      dueDate: '',
+    });
+    this.form.markAsUntouched();
+    this.form.markAsPristine();
   }
 
   getFilteredTasks(): DashboardInterface[] {
@@ -205,20 +211,30 @@ export class DashboardComponent implements OnInit {
     return filtered;
   }
 
-  toggleTaskComplete(id: number | undefined) {
-    const task: DashboardInterface | undefined = this.tasks.find(
+  toggleTaskComplete(id: number | undefined): void {
+    const target: DashboardInterface | undefined = this.tasks.find(
       (task: DashboardInterface) => task.id === id,
     );
+    if (!target || target.id === undefined) return;
 
-    if (task) {
-      if (task.status === 'completed') {
-        task.status = 'pending';
-        delete task.completedAt;
-      } else {
-        task.status = 'completed';
-        task.completedAt = new Date();
-      }
-    }
+    const { completedAt, ...taskWithoutCompletedAt } = target;
+
+    const updated: DashboardInterface =
+      target.status === 'completed'
+        ? { ...taskWithoutCompletedAt, status: 'pending' }
+        : { ...target, status: 'completed', completedAt: new Date() };
+
+    this._service
+      .updateData(target.id, updated)
+      .subscribe((resp: ApiResponsesModel<DashboardInterface>) => {
+        console.log(resp);
+        if (resp?.success) {
+          this.tasks = this.tasks.map((task: DashboardInterface) =>
+            task.id === id ? updated : task,
+          );
+          this._cdr.markForCheck();
+        }
+      });
   }
 
   isOverdue(task: DashboardInterface): boolean {
@@ -229,8 +245,7 @@ export class DashboardComponent implements OnInit {
 
   deleteTask(id: number | undefined): void {
     if (id !== null && id !== undefined) {
-      const index: number = this.tasks.findIndex((task: DashboardInterface) => task.id === id);
-      if (index !== -1) this.tasks.splice(index, 1);
+      this.tasks = this.tasks.filter((task: DashboardInterface) => task.id !== id);
       this._service.removeData(id).subscribe(() => {});
     }
   }

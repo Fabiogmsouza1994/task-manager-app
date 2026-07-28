@@ -54,7 +54,7 @@
       />
     </mat-form-field>
   }
-  @if (definirMsgValidacao()) {
-    <small class="fs-6 py-2 text-danger text-wrap text-start">{{ msgValidacao() }}</small>
+  @if (definirMsgValidacao(); as msg) {
+    <small class="fs-6 py-2 text-danger text-wrap text-start">{{ msg }}</small>
   }
 </span>

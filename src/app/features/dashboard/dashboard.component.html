@@ -201,6 +201,11 @@
                   >
                     Due: {{ task.dueDate | date }}
                   </span>
+                  @if (task.status === 'completed' && task.completedAt) {
+                    <span class="d-flex align-items-center" style="color: #16a34a">
+                      Completed: {{ task.completedAt | date }}
+                    </span>
+                  }
                 </div>
               </div>
             </div>
